@@ -2,14 +2,11 @@ import {
   StyleSheet,
   View,
   Image,
-  FlatList,
   Dimensions,
-  Text,
   TouchableOpacity,
 } from 'react-native';
 
 import React, {useState} from 'react';
-// import Carousel from 'react-native-reanimated-carousel';
 import AppText from './AppText';
 import Carousel from 'react-native-anchor-carousel';
 
@@ -30,7 +27,7 @@ const Card = ({imgStyle, cardStyle, data, navigation}) => {
         mode="parallax"
         ref={carouselRef}
         data={data}
-        separatorWidth={0}
+        separatorWidth={5}
         windowSize={width}
         key={({item}) => {
           item.id;
@@ -42,6 +39,7 @@ const Card = ({imgStyle, cardStyle, data, navigation}) => {
                 style={[
                   styles.card,
                   index == 0 && {paddingLeft: 40},
+                  index == data.length - 1 && {paddingRight: 40},
                   cardStyle,
                 ]}
                 onPressOut={() => {
@@ -60,7 +58,9 @@ const Card = ({imgStyle, cardStyle, data, navigation}) => {
                     resizeMode="cover"
                   />
                 </View>
-                <AppText style={styles.title}>{item.name}</AppText>
+                <AppText numberOfLines={1} style={styles.title}>
+                  {item.name}
+                </AppText>
                 <AppText style={styles.price}>${item.price} </AppText>
               </TouchableOpacity>
             </>

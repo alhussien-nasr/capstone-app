@@ -9,77 +9,44 @@ import {useState} from 'react';
 import {loadMoreProduct} from '../Redux/EqSlice';
 import {apiCall} from '../api';
 import {useIsFocused} from '@react-navigation/native';
-
+import {categoriesSelector} from '../store/categories/categoriesSelector';
 const ItemsScreen = ({navigation, route}) => {
-  const equipment = useSelector(state => state.equipment.ls);
-  const wishList = useSelector(state => state.equipment.cart.wishList);
-  const [bage, setBage] = useState(2);
-  console.log(bage, 'bage');
-  const focused = useIsFocused();
-  const [searchval, setSearchVal] = useState('');
-  const [length, setLength] = useState(null);
-  const {category, id} = route?.params;
+  const {title} = route?.params;
+  const categoriesMap = useSelector(categoriesSelector);
+  const products = categoriesMap[title];
+
+  console.log(categoriesMap, products, 'catt');
+
   const dispatch = useDispatch();
-  useEffect(() => {
-    setBage(2);
-  }, [focused]);
-  console.log([].length, 'array');
-  useEffect(() => {
-    apiCall(`product/parent-category?id=${id}&page=${bage}`, 'get')
-      .then(res => {
-        dispatch(loadMoreProduct(res?.data.data));
-        setLength(res.data.data.length);
-      })
-      .then(res => {
-        console.log(res, 'from item screen');
-      })
-      .catch(err => console.log(err, 'from item screen'));
-  }, [bage]),
-    console.log(wishList, 'wishList');
-  console.log(equipment, 'equipment');
-
-  return !equipment ? (
-    <ActivityIndicator />
-  ) : (
+  const [searchval, setSearchVal] = useState('');
+  return (
     <Screen scrollView={false} style={styles.container}>
-      <AppText style={styles.text}>{category.split(' ')[0]}</AppText>
-
       <FlatList
         contentContainerStyle={{marginBottom: 50}}
         numColumns={2}
-        onEndReachedThreshold={0.5}
-        onEndReached={() =>
-          length != 0 ? setBage(val => val + 1) : console.log('reach end')
-        }
         stickyHeaderHiddenOnScroll={true}
-        stickyHeaderIndices={[0]}
-        ListHeaderComponent={() => (
-          <>
-            <AppInput
-              value={searchval}
-              placeholder="Search"
-              name="search"
-              onChangeText={val => {
-                setSearchVal(val);
-              }}
-            />
-          </>
-        )}
+        ListHeaderComponent={() => [
+          <AppText style={styles.text}>{title.split(' ')[0]}</AppText>,
+          <AppInput
+            value={searchval}
+            placeholder="Search"
+            name="search"
+            style={{marginBottom: 30}}
+            onChangeText={val => {
+              setSearchVal(val);
+            }}
+          />,
+        ]}
         columnWrapperStyle={{justifyContent: 'space-around'}}
         data={
           searchval
-            ? equipment.filter(item =>
-                item.title.toLowerCase().includes(searchval),
+            ? products.filter(item =>
+                item.name.toLowerCase().includes(searchval),
               )
-            : equipment
+            : products
         }
         renderItem={({item}) => (
-          <ItemCard
-            item={item}
-            id={id}
-            category={category}
-            navigation={navigation}
-          />
+          <ItemCard item={item} category={products} navigation={navigation} />
         )}
       />
     </Screen>

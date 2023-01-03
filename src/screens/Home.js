@@ -26,7 +26,7 @@ const Home = ({navigation}) => {
       .sort(() => 0.5 - Math.random())
       .slice(0, 6),
   );
-  console.log(categories, 'cat');
+  console.log(categories, 'catt');
 
   useEffect(() => {
     SplashScreen.hide();
@@ -52,8 +52,7 @@ const Home = ({navigation}) => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('ItemsScreen', {
-                category: item.name,
-                id: item.id,
+                title: item.title,
               })
             }
             style={styles.CategoryCard}>
