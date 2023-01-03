@@ -12,18 +12,25 @@ import {Screen} from '../components/Screen';
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import {useState} from 'react';
-import {authantication, db} from '../firebase/firebase';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {doc, setDoc} from 'firebase/firestore';
 const width = Dimensions.get('window').width;
+import {
+  createAuthUserWithEmailAndPassword,
+  createUser,
+} from '../utils/firebase';
+import {async} from '@firebase/util';
 const height = Dimensions.get('window').height;
 
 const Register = ({navigation}) => {
-  const [name, setName] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   console.log(email, 'ee');
   console.log(password, 'Pass');
+  const registerHandler = async () => {
+    const {user} = createAuthUserWithEmailAndPassword(email, password);
+    const {uid} = user;
+    await createUser({uid, displayName, email});
+  };
   return (
     <Screen scrollView={false} style={{backgroundColor: 'rgb(1	,27	,146	)'}}>
       <View style={styles.boxOne} />
@@ -36,8 +43,8 @@ const Register = ({navigation}) => {
           <AppText style={styles.text}>Name</AppText>
           <AppInput
             placeholder={'Name'}
-            value={name}
-            onChangeText={val => setName(val)}
+            value={displayName}
+            onChangeText={val => setDisplayName(val)}
           />
         </View>
         <View>
@@ -64,26 +71,7 @@ const Register = ({navigation}) => {
         <AppButton
           title={'create account'}
           style={styles.btn}
-          onPress={() => {
-            createUserWithEmailAndPassword(authantication, email, password)
-              .then(userCredential => {
-                // Signed in
-                const user = userCredential.user;
-                setDoc(doc(db, 'users', user.uid), {
-                  email,
-                  name,
-                }).then(() => console.log('Document updated'));
-
-                // ...
-              })
-              .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // ..
-                console.log(error);
-              });
-            console.log('p');
-          }}
+          onPress={registerHandler}
         />
         <View style={styles.row}>
           <AppText style={styles.signupText}>Already have account</AppText>
