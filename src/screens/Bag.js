@@ -9,23 +9,15 @@ import {useNavigation} from '@react-navigation/native';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const Bag = () => {
-  const cart = useSelector(state => state.equipment.cart);
-  const user = useSelector(state => state.equipment.userInfo.token);
+  const {cartItems, cartTotal} = useSelector(state => state.cart);
   const navigation = useNavigation();
   const [disabled, setDisabled] = useState(false);
-  const total = cart.reduce((accumulator, object) => {
-    return accumulator + object.cost * object.count;
-  }, 0);
-  const ids = cart.map(item => item.product._id);
-  console.log(cart, 'from bag', total, 'total', ids, user);
-  useEffect(() => {
-    !total && setDisabled(true);
-  }, []);
+
   return (
     <Screen scrollView={false}>
       <AppText style={styles.title}>My Bag</AppText>
       <FlatList
-        data={cart}
+        data={cartItems}
         style={{marginBottom: 200}}
         ItemSeparatorComponent={() => <View style={{height: 20}} />}
         renderItem={({item}) => (
@@ -33,13 +25,13 @@ const Bag = () => {
         )}
       />
       <View style={styles.fotter}>
-        {total ? <AppText> total : {total.toFixed(2)}</AppText> : null}
+        {cartTotal ? <AppText> total : {cartTotal.toFixed(2)}</AppText> : null}
         <AppButton
-          style={[styles.btn, !total && {backgroundColor: 'gray'}]}
+          style={[styles.btn, !cartTotal && {backgroundColor: 'gray'}]}
           title={'Process to Check out'}
           disabled={disabled}
           onPress={() => {
-            navigation.navigate('CheckOut', {total, ids});
+            navigation.navigate('CheckOut', {cartTotal});
           }}
         />
       </View>

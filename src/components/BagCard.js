@@ -1,13 +1,11 @@
 import {
   StyleSheet,
-  Text,
   View,
   Dimensions,
   TouchableOpacity,
-  FlatList,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {
   SwipeItem,
   SwipeButtonsContainer,
@@ -16,31 +14,29 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import AppText from './AppText';
 import {useDispatch, useSelector} from 'react-redux';
-import {setCart} from '../Redux/EqSlice';
-import {apiCall} from '../api';
+import {
+  addItemToCart,
+  removeItemfromCart,
+  clearItem,
+} from '../store/cart/cartActions';
 
 const width = Dimensions.get('window').width;
 const BagCard = ({item, style}) => {
+  const {cartItems} = useSelector(state => state.cart);
+
   const dispatch = useDispatch();
 
   const [clicked, setClicked] = useState(false);
 
-  const user = useSelector(state => state.equipment.userInfo.token);
-  const alterQuantity = async (id, action, count) => {
-    try {
-      await apiCall(
-        'cart',
-        'put',
-        {id: id, action: action, count: count},
-        user,
-      );
-      const res = await apiCall(`cart`, 'get', undefined, user);
-      dispatch(setCart(res.data.items));
-    } catch (error) {
-      console.log(error, 'err');
-    }
+  const addItemtoCartHandler = () => {
+    dispatch(addItemToCart(cartItems, item));
   };
-
+  const remiveItemfromCartHandler = () => {
+    dispatch(removeItemfromCart(cartItems, item));
+  };
+  const clearItemHandler = () => {
+    dispatch(clearItem(cartItems, item.id));
+  };
   return (
     <SwipeProvider>
       <SwipeItem
@@ -57,10 +53,7 @@ const BagCard = ({item, style}) => {
               justifyContent: 'center',
               marginRight: 15,
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                alterQuantity(item._id, 'delete');
-              }}>
+            <TouchableOpacity onPress={clearItemHandler}>
               <Icon name="delete" size={30} />
             </TouchableOpacity>
           </SwipeButtonsContainer>
@@ -68,29 +61,23 @@ const BagCard = ({item, style}) => {
         <View style={[styles.container, style]}>
           <Image
             source={{
-              uri:
-                item?.product?.images &&
-                `http://www.rncourseproject.com/uploads/products/${item.product.images[0]}`,
+              uri: item.imageUrl,
             }}
             style={styles.img}
-            resizeMode="contain"
+            resizeMode="stretch"
           />
           <View style={styles.details}>
             <AppText numberOfLines={2} style={styles.title}>
-              {item.product?.title}
+              {item.name}
             </AppText>
-            <AppText style={styles.price}>{item.product?.price}</AppText>
+            <AppText style={styles.price}>${item.price}</AppText>
           </View>
           <View style={styles.counter}>
-            <TouchableOpacity
-              onPress={() => {
-                alterQuantity(item._id, 'increase', 1);
-              }}>
+            <TouchableOpacity onPress={addItemtoCartHandler}>
               <AppText style={styles.countIcon}>+</AppText>
             </TouchableOpacity>
-            <AppText>{item.count}</AppText>
-            <TouchableOpacity
-              onPress={() => alterQuantity(item._id, 'decrease', 1)}>
+            <AppText>{item.quantity}</AppText>
+            <TouchableOpacity onPress={remiveItemfromCartHandler}>
               <AppText style={styles.countIcon}> - </AppText>
             </TouchableOpacity>
           </View>
@@ -116,7 +103,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 1,
   },
-  img: {height: '100%', width: '30%', marginRight: 20},
+  img: {height: '100%', width: '30%', marginRight: 20, borderRadius: 15},
   details: {justifyContent: 'space-around', width: 140},
   price: {fontSize: 20, fontWeight: '600'},
   title: {},

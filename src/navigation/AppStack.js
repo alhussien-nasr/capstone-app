@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import FIcon from 'react-native-vector-icons/Fontisto';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -16,21 +16,20 @@ import CheckOut from '../screens/CheckOut';
 import AccountInformation from '../screens/AccountInformation';
 import Address from '../screens/Address';
 import {TabStack} from './TabStack';
-import {Header} from './Header';
 const Stack = createNativeStackNavigator();
 const popAction = StackActions.pop(1);
 
 export const AppStack = () => {
   const {categories} = useSelector(state => state.categories);
-  const {cartItems} = useSelector(state => state.cart);
+  const cartCount = useSelector(state => state.cart.cartCount);
 
   const navigation = useNavigation();
   // const Token = useSelector(state => state.equipment.userInfo?.token);
   const headerRight = () => (
     <View style={{marginTop: 15}}>
-      {cartItems.length != 0 && (
+      {cartCount != 0 && (
         <View style={styles.headerRight}>
-          <AppText style={{color: 'white'}}>{cartItems.length}</AppText>
+          <AppText style={{color: 'white'}}>{cartCount}</AppText>
         </View>
       )}
       <AntIcon

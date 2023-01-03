@@ -1,14 +1,11 @@
-import {StyleSheet, ActivityIndicator, FlatList} from 'react-native';
-import React, {useEffect} from 'react';
+import {StyleSheet, FlatList} from 'react-native';
+import React from 'react';
 import {Screen} from '../components/Screen';
 import ItemCard from '../components/ItemCard';
 import {useDispatch, useSelector} from 'react-redux';
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import {useState} from 'react';
-import {loadMoreProduct} from '../Redux/EqSlice';
-import {apiCall} from '../api';
-import {useIsFocused} from '@react-navigation/native';
 import {categoriesSelector} from '../store/categories/categoriesSelector';
 const ItemsScreen = ({navigation, route}) => {
   const {title} = route?.params;
@@ -17,7 +14,6 @@ const ItemsScreen = ({navigation, route}) => {
 
   console.log(categoriesMap, products, 'catt');
 
-  const dispatch = useDispatch();
   const [searchval, setSearchVal] = useState('');
   return (
     <Screen scrollView={false} style={styles.container}>

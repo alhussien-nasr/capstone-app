@@ -47,7 +47,7 @@ const Card = ({imgStyle, cardStyle, data, navigation}) => {
                 }}
                 onPress={() => {
                   carouselRef.current.scrollToIndex(index);
-                  navigation.navigate('ItemDetails', {id: item.id});
+                  navigation.navigate('ItemDetails', {item});
                 }}>
                 <View style={styles.imgContainer}>
                   <Image

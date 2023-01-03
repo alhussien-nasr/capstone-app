@@ -26,7 +26,7 @@ const ItemCard = ({item, navigation}) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('ItemDetails', {id: item.id})}
+      onPress={() => navigation.navigate('ItemDetails', {item})}
       style={styles.Itemcontainer}>
       <Image
         source={{
