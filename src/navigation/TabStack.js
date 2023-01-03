@@ -27,7 +27,6 @@ export const TabStack = ({}) => {
         tabBarShowLabel: false,
       })}>
       <Tab.Screen
-      
         name="Home"
         component={Home}
         options={{
@@ -55,7 +54,7 @@ export const TabStack = ({}) => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="WishList"
         component={WishList}
         options={{
@@ -68,7 +67,7 @@ export const TabStack = ({}) => {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
