@@ -7,7 +7,6 @@ import {
   Platform,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {app} from '../firebase/firebase';
 import AppText from '../components/AppText';
 import {Screen} from '../components/Screen';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,8 +17,6 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import SIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../Redux/EqSlice';
-import axios from 'axios';
 
 const Profile = ({navigation}) => {
   const [img, setImg] = useState(null);

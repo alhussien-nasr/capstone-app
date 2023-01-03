@@ -5,15 +5,21 @@ import {Screen} from '../components/Screen';
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import {useState} from 'react';
-import {authantication} from '../firebase/firebase';
-import {signInWithEmailAndPassword} from 'firebase/auth';
-
+import {
+  logInWIthEmailAndPassword,
+  signInWhithGooglePopup,
+} from '../utils/firebase/index';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
+
 const LogIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const loginHandler = async () => {
+    res = await logInWIthEmailAndPassword(email, password);
+    console.log(res, 'res');
+  };
   return (
     <Screen scrollView={false} style={{backgroundColor: 'rgb(1	,27	,146	)'}}>
       <View style={styles.boxOne} />
@@ -42,23 +48,9 @@ const LogIn = ({navigation}) => {
             onChangeText={val => setPassword(() => val)}
           />
         </View>
-        <AppButton
-          title={'log in'}
-          style={styles.btn}
-          onPress={() =>
-            signInWithEmailAndPassword(authantication, email, password)
-              .then(userCredential => {
-                // Signed in
-                const user = userCredential.user;
-                console.log(user);
-                // ...
-              })
-              .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-              })
-          }
-        />
+        <AppButton title={'log in'} style={styles.btn} onPress={loginHandler} />
+        <AppButton title={'Google'} onPress={signInWhithGooglePopup} />
+
         <TouchableOpacity onPress={() => navigation.navigate('LogWithNumper')}>
           <AppText style={{color: 'rgb(39	,73	,220	)', marginTop: 20}}>
             login with phone number

@@ -4,11 +4,9 @@ import {Screen} from '../components/Screen';
 import AppText from '../components/AppText';
 import CategoryCard from '../components/CategoryCard';
 import AppInput from '../components/AppInput';
-import {useSelector} from 'react-redux';
-
+import {category} from '../Data/category'
 const Category = ({navigation}) => {
   const [searchVal, setSearchVal] = useState('');
-  const category = useSelector(state => state.equipment.category);
 
   return (
     <Screen style={{padding: 10}}>
