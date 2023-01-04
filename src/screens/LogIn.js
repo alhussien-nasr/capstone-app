@@ -9,6 +9,8 @@ import {
   logInWIthEmailAndPassword,
   signInWhithGooglePopup,
 } from '../utils/firebase/index';
+import screen from 'react-native-splash-screen';
+import {useEffect} from 'react';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
@@ -20,6 +22,9 @@ const LogIn = ({navigation}) => {
     res = await logInWIthEmailAndPassword(email, password);
     console.log(res, 'res');
   };
+  useEffect(() => {
+    screen.hide();
+  }, []);
   return (
     <Screen scrollView={false} style={{backgroundColor: 'rgb(1	,27	,146	)'}}>
       <View style={styles.boxOne} />
@@ -49,13 +54,6 @@ const LogIn = ({navigation}) => {
           />
         </View>
         <AppButton title={'log in'} style={styles.btn} onPress={loginHandler} />
-        <AppButton title={'Google'} onPress={signInWhithGooglePopup} />
-
-        <TouchableOpacity onPress={() => navigation.navigate('LogWithNumper')}>
-          <AppText style={{color: 'rgb(39	,73	,220	)', marginTop: 20}}>
-            login with phone number
-          </AppText>
-        </TouchableOpacity>
 
         <View style={styles.row}>
           <AppText style={styles.signupText}>don't have an account</AppText>

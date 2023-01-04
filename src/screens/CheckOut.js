@@ -19,61 +19,12 @@ import {useNavigation} from '@react-navigation/native';
 const width = Dimensions.get('window').width;
 
 const CheckOut = ({route}) => {
-  const token = useSelector(state => state.equipment.userInfo.token);
-  const cart = useSelector(state => state.equipment.cart);
+
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const alterQuantity = async (id, action) =>
-    apiCall('cart', 'put', {id: id, action: action}, token);
-  const [addres, setAddres] = useState(false);
-  const {total, ids} = route.params;
-  console.log(ids);
-  const navigation = useNavigation();
 
-  const confirm = async () => {
-    setLoading(true);
-
-    try {
-      await apiCall(
-        `order`,
-        'post',
-        {
-          items: ids,
-          shippingAddress: addres,
-          totalCost: total,
-          paymentMethod: 1,
-          isCoupon: false,
-          coupon: 'xxxx',
-          totalAfterCoupon: total,
-          from: 5,
-          to: 7,
-          day: 'sat',
-        },
-        token,
-      );
-      await Promise.all(
-        cart.map(item =>
-          alterQuantity(item._id, 'delete').catch(err =>
-            console.log(err, 'from cart'),
-          ),
-        ),
-      );
-      const res = await apiCall(`cart`, 'get', undefined, token);
-      dispatch(setCart(res.data.items));
-      setLoading(false);
-      setSuccess(true);
-    } catch (error) {
-      console.log(error, 'form try catch');
-    }
-  };
-  useEffect(() => {
-    apiCall('address', 'get', undefined, token).then(res => {
-      dispatch(setAddress(res.data.adds));
-    });
-  }, []);
-  const address = useSelector(state => state.equipment.address);
 
   return (
     <Screen scrollView={false} style={styles.container}>
@@ -88,7 +39,6 @@ const CheckOut = ({route}) => {
       )}
       <View style={styles.addressContainer}>
         <FlatList
-          data={address}
           contentContainerStyle={{alignItems: 'center'}}
           keyExtractor={item => item._id}
           renderItem={({item}) => (

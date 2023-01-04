@@ -1,10 +1,8 @@
 import {
   StyleSheet,
-  Text,
   View,
   Dimensions,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import React from 'react';
 import AppInput from '../components/AppInput';
@@ -17,15 +15,14 @@ import {
   createAuthUserWithEmailAndPassword,
   createUser,
 } from '../utils/firebase';
-import {async} from '@firebase/util';
+
 const height = Dimensions.get('window').height;
 
 const Register = ({navigation}) => {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log(email, 'ee');
-  console.log(password, 'Pass');
+
   const registerHandler = async () => {
     const {user} = createAuthUserWithEmailAndPassword(email, password);
     const {uid} = user;
@@ -61,13 +58,11 @@ const Register = ({navigation}) => {
           <AppText style={styles.text}>Password</AppText>
           <AppInput
             placeholder={'Password'}
-            keyboardType="default"
             secureTextEntry={true}
             value={password}
             onChangeText={val => setPassword(() => val)}
           />
         </View>
-        <TextInput secureTextEntry="" />
         <AppButton
           title={'create account'}
           style={styles.btn}

@@ -8,16 +8,9 @@ import {
   Image,
 } from 'react-native';
 import React, {useState} from 'react';
-import {
-  SwipeItem,
-  SwipeButtonsContainer,
-  SwipeProvider,
-} from 'react-native-swipe-item';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AppText from './AppText';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToBag, removeFromWihList, setCart} from '../Redux/EqSlice';
-import {createNavigationContainerRef} from '@react-navigation/native';
 import {apiCall} from '../api';
 
 const width = Dimensions.get('window').width;

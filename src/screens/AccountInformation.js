@@ -1,35 +1,22 @@
 import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AppText from '../components/AppText';
-import AppInput from '../components/AppInput';
 import {Screen} from '../components/Screen';
 import AppButton from '../components/AppButton';
 import {apiCall} from '../api';
 import {useDispatch, useSelector} from 'react-redux';
 import {setAddress} from '../Redux/EqSlice';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 const AccountInformation = ({navigation}) => {
-  const token = useSelector(state => state.equipment.userInfo.token);
-  const address = useSelector(state => state.equipment.address);
-  console.log(address);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    apiCall('address', 'get', undefined, token)
-      .then(res => {
-        console.log(res.data.adds, '12');
-        dispatch(setAddress(res.data.adds));
-      })
-      .catch(err => console.log(err, '12'));
-  }, []);
   return (
     <Screen scrollView={false}>
       <AppText style={[styles.title, {paddingLeft: 20}]}>user address</AppText>
-      <FlatList
+      {/* <FlatList
         data={address}
         contentContainerStyle={{height: '80%', alignItems: 'center'}}
         renderItem={({item}) => (
@@ -42,7 +29,7 @@ const AccountInformation = ({navigation}) => {
             <AppText>building: {item.building}</AppText>
           </View>
         )}
-      />
+      /> */}
       <AppButton
         title={'add address'}
         style={styles.btn}

@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import {initializeApp} from 'firebase/app';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -7,7 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-} from "firebase/auth";
+} from 'firebase/auth';
 import {
   getFirestore,
   doc,
@@ -16,36 +16,38 @@ import {
   getDocs,
   writeBatch,
   collection,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD4NHdB9LqulCC_CM0aHZ4EAA9mJyd16Mk",
-  authDomain: "crwn-clothing-db-a311b.firebaseapp.com",
-  projectId: "crwn-clothing-db-a311b",
-  storageBucket: "crwn-clothing-db-a311b.appspot.com",
-  messagingSenderId: "678963034428",
-  appId: "1:678963034428:web:48f810ba207364cc800639",
+  apiKey: 'AIzaSyD4NHdB9LqulCC_CM0aHZ4EAA9mJyd16Mk',
+  authDomain: 'crwn-clothing-db-a311b.firebaseapp.com',
+  projectId: 'crwn-clothing-db-a311b',
+  storageBucket: 'crwn-clothing-db-a311b.appspot.com',
+  messagingSenderId: '678963034428',
+  appId: '1:678963034428:web:48f810ba207364cc800639',
 };
 
 export const app = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
-  prompt: "select_account",
+  prompt: 'select_account',
 });
 
 export const auth = getAuth();
-const db = getFirestore(app);
+const db = getFirestore(app, {
+  experimentalForceLongPolling: true,
+});
 export const signInWhithGooglePopup = () => signInWithPopup(auth, provider);
 
-export const createUser = async (userAuth) => {
-  const userDocumentRef = doc(db, "users", userAuth.uid);
+export const createUser = async userAuth => {
+  const userDocumentRef = doc(db, 'users', userAuth.uid);
   const snapshot = await getDoc(userDocumentRef);
   if (!snapshot.exists()) {
     try {
-      const { email, displayName } = userAuth;
+      const {email, displayName} = userAuth;
       const createdAt = new Date();
-      setDoc(userDocumentRef, { email, displayName, createdAt });
+      setDoc(userDocumentRef, {email, displayName, createdAt});
     } catch (error) {
       console.log(error);
     }
@@ -62,20 +64,20 @@ export const logInWIthEmailAndPassword = async (email, password) => {
 };
 export const signOutUser = async () => await signOut(auth);
 
-export const onAuthChangeListner = (callback) =>
+export const onAuthChangeListner = callback =>
   onAuthStateChanged(auth, callback);
 
-export const addCategory = (catt) => {
-  const collectionRef = collection(db, "category");
+export const addCategory = catt => {
+  const collectionRef = collection(db, 'category');
   const batch = writeBatch(db);
-  catt.forEach((element) => {
+  catt.forEach(element => {
     const ref = doc(collectionRef, element.title.toLowerCase());
     batch.set(ref, element);
   });
   batch.commit();
 };
 export const getCategory = async () => {
-  const collectionRef = collection(db, "category");
+  const collectionRef = collection(db, 'category');
   const snapshot = await getDocs(collectionRef);
-  return snapshot.docs.map((doc) => doc.data());
+  return snapshot.docs.map(doc => doc.data());
 };

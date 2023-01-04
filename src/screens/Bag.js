@@ -29,7 +29,7 @@ const Bag = () => {
         <AppButton
           style={[styles.btn, !cartTotal && {backgroundColor: 'gray'}]}
           title={'Process to Check out'}
-          disabled={disabled}
+          disabled={true}
           onPress={() => {
             navigation.navigate('CheckOut', {cartTotal});
           }}

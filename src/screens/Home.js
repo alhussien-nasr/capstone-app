@@ -4,13 +4,13 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {Screen} from '../components/Screen';
 import AppText from '../components/AppText';
 import ExploreCard from '../components/ExploreCard';
 import {useSelector, useDispatch} from 'react-redux';
-import {cleanList} from '../Redux/EqSlice';
 import SplashScreen from 'react-native-splash-screen';
 import {category} from '../Data/category';
 import {CATEGORIES_TYPES} from '../store/categories/categoriesTypes';
@@ -26,6 +26,7 @@ const Home = ({navigation}) => {
       .sort(() => 0.5 - Math.random())
       .slice(0, 6),
   );
+  const loading=useSelector(store=>store.categories.loading)
   console.log(categories, 'catt');
 
   useEffect(() => {
@@ -68,7 +69,11 @@ const Home = ({navigation}) => {
           </TouchableOpacity>
         )}
       />
-      <ExploreCard data={categories} navigation={navigation} />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <ExploreCard data={categories} navigation={navigation} />
+      )}
     </Screen>
   );
 };
@@ -102,6 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingRight: 30,
     alignItems: 'flex-end',
+    marginTop: 30,
   },
   img: {minWidth: 120, height: 120, borderRadius: 60},
   title: {fontWeight: '700', fontSize: 20, marginTop: 5},

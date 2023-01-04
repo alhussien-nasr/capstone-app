@@ -6,7 +6,6 @@ import {Screen} from '../components/Screen';
 import AppButton from '../components/AppButton';
 import {apiCall} from '../api';
 import {useDispatch, useSelector} from 'react-redux';
-import {setAddress} from '../Redux/EqSlice';
 import {useNavigation} from '@react-navigation/native';
 
 const width = Dimensions.get('window').width;

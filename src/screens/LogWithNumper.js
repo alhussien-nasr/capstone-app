@@ -16,7 +16,6 @@ import {authantication} from '../firebase/firebase';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
-import {setConfirm} from '../Redux/EqSlice';
 import Toast from 'react-native-toast-message';
 import {apiCall} from '../api';
 import SplashScreen from 'react-native-splash-screen';
