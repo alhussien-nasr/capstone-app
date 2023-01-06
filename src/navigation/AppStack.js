@@ -8,7 +8,7 @@ import ItemsScreen from '../screens/ItemsScreen';
 import ItemDetails from '../screens/ItemDetails';
 import {StackActions, useNavigation} from '@react-navigation/native';
 import Bag from '../screens/Bag';
-import {StyleSheet, View} from 'react-native';
+import {I18nManager, StyleSheet, View} from 'react-native';
 import AppText from '../components/AppText';
 import {useDispatch, useSelector} from 'react-redux';
 import LogWithNumper from '../screens/LogWithNumper';
@@ -23,6 +23,8 @@ import {createUser, onAuthChangeListner} from '../utils/firebase';
 import {setCurrentUser} from '../store/user/userAction';
 const Stack = createNativeStackNavigator();
 const popAction = StackActions.pop(1);
+
+I18nManager.allowRTL(false);
 
 export const AppStack = () => {
   const cartCount = useSelector(state => state.cart.cartCount);

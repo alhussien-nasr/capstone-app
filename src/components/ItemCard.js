@@ -35,11 +35,10 @@ const ItemCard = ({item, navigation}) => {
         style={styles.img}
         resizeMode="stretch"
       />
-      <AppText numberOfLines={2} style={styles.name}>
+      <AppText numberOfLines={1} style={styles.name}>
         {item.name}
       </AppText>
       <AppText style={styles.price}>${item.price}</AppText>
-
       {/* <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => dispatch(addTowishList(item))}
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
   img: {width: width * 0.4, height: width * 0.45, borderRadius: 15},
   name: {
     fontWeight: '600',
-    marginBottom:10,
+    marginBottom: 10,
     fontSize: 20,
   },
   price: {

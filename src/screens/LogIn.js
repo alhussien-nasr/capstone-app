@@ -1,4 +1,10 @@
-import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  I18nManager,
+} from 'react-native';
 import React from 'react';
 import AppInput from '../components/AppInput';
 import {Screen} from '../components/Screen';
@@ -23,6 +29,7 @@ const LogIn = ({navigation}) => {
     console.log(res, 'res');
   };
   useEffect(() => {
+    I18nManager.allowRTL(false);
     screen.hide();
   }, []);
   return (

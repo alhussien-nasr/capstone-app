@@ -7,11 +7,8 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
 import {AppStack} from './src/navigation/AppStack';
-import {useEffect} from 'react';
 
-useEffect(() => {
-  I18nManager.allowRTL(false);
-}, []);
+I18nManager.allowRTL(false);
 
 const App = () => {
   return (

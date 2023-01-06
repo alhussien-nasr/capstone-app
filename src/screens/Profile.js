@@ -6,17 +6,12 @@ import {
   Linking,
   Platform,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {app, signOutUser} from '../utils/firebase';
 import AppText from '../components/AppText';
 import {Screen} from '../components/Screen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {PermissionsAndroid} from 'react-native';
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import SIcon from 'react-native-vector-icons/SimpleLineIcons';
-import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Profile = ({navigation}) => {
@@ -26,11 +21,7 @@ const Profile = ({navigation}) => {
   return (
     <Screen style={styles.container} scrollView={false}>
       <AppText style={styles.title}>Profile</AppText>
-      <TouchableOpacity
-        onPress={() =>
-          Platform.OS == 'ios' ? OpenIosLibrary() : requestCameraPermission()
-        }
-        style={styles.imgContainer}>
+      <TouchableOpacity style={styles.imgContainer}>
         <Icon name="person" size={40} />
       </TouchableOpacity>
 

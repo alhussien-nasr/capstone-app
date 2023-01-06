@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  I18nManager,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {Screen} from '../components/Screen';
@@ -26,10 +27,11 @@ const Home = ({navigation}) => {
       .sort(() => 0.5 - Math.random())
       .slice(0, 6),
   );
-  const loading=useSelector(store=>store.categories.loading)
+  const loading = useSelector(store => store.categories.loading);
   console.log(categories, 'catt');
 
   useEffect(() => {
+    I18nManager.allowRTL(false);
     SplashScreen.hide();
     dispatch({type: CATEGORIES_TYPES.FETCH_CATEGORIES_START});
   }, []);
@@ -37,7 +39,7 @@ const Home = ({navigation}) => {
     <Screen>
       <View style={styles.row}>
         <AppText style={styles.text}>Category</AppText>
-        <TouchableOpacity onPress={() => navigation.navigate('CategoryStack')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Category')}>
           <AppText style={{fontSize: 16, color: 'rgb(14	,139,	224	)'}}>
             see all
           </AppText>

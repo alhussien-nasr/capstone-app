@@ -15,32 +15,33 @@ const ItemsScreen = ({navigation, route}) => {
   console.log(categoriesMap, products, 'catt');
 
   const [searchval, setSearchVal] = useState('');
+  const Header = () => {
+    return (
+      <>
+        <AppText style={styles.text}>{title}</AppText>
+        <AppInput
+          value={searchval}
+          placeholder="Search"
+          name="search"
+          style={{marginBottom: 30}}
+          onChangeText={val => {
+            setSearchVal(val);
+          }}
+        />
+      </>
+    );
+  };
   return (
     <Screen scrollView={false} style={styles.container}>
       <FlatList
         contentContainerStyle={{marginBottom: 50}}
         numColumns={2}
+        ListHeaderComponent={Header()}
         stickyHeaderHiddenOnScroll={true}
-        ListHeaderComponent={() => [
-          <AppText style={styles.text}>{title.split(' ')[0]}</AppText>,
-          <AppInput
-            value={searchval}
-            placeholder="Search"
-            name="search"
-            style={{marginBottom: 30}}
-            onChangeText={val => {
-              setSearchVal(val);
-            }}
-          />,
-        ]}
         columnWrapperStyle={{justifyContent: 'space-around'}}
-        data={
-          searchval
-            ? products.filter(item =>
-                item.name.toLowerCase().includes(searchval),
-              )
-            : products
-        }
+        data={products.filter(item =>
+          item.name.toLowerCase().includes(searchval.toLowerCase()),
+        )}
         renderItem={({item}) => (
           <ItemCard item={item} category={products} navigation={navigation} />
         )}

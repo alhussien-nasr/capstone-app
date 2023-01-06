@@ -4,6 +4,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 
 import React, {useState} from 'react';
@@ -75,17 +76,17 @@ const Card = ({imgStyle, cardStyle, data, navigation}) => {
             carouselRef.current.scrollToIndex(currentIndex - 1);
             setCurrentIndex(currentIndex - 1);
           }}>
-          <AppText> {`<`} </AppText>
+          <AppText style={styles.arrow}> {`<`} </AppText>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.btn}
           onPress={() => {
-            if (currentIndex === data.length) return;
+            if (currentIndex === data.length - 1) return;
             carouselRef.current.scrollToIndex(currentIndex + 1);
             setCurrentIndex(currentIndex + 1);
           }}>
-          <AppText> {`>`} </AppText>
+          <AppText style={styles.arrow}> {`>`} </AppText>
         </TouchableOpacity>
       </View>
     </>
@@ -123,9 +124,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   btn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
@@ -140,4 +141,5 @@ const styles = StyleSheet.create({
   },
   title: {fontSize: 28, fontWeight: '600', marginHorizontal: 10},
   price: {fontSize: 25, fontWeight: '700'},
+  arrow: {fontSize: 23, fontWeight: '700'},
 });
