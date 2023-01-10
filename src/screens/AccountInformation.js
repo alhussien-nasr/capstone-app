@@ -1,35 +1,19 @@
-import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
+import React from 'react';
 import AppText from '../components/AppText';
 import {Screen} from '../components/Screen';
 import AppButton from '../components/AppButton';
-import {apiCall} from '../api';
 import {useDispatch, useSelector} from 'react-redux';
-import {setAddress} from '../Redux/EqSlice';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 const AccountInformation = ({navigation}) => {
-  const dispatch = useDispatch();
 
   return (
     <Screen scrollView={false}>
       <AppText style={[styles.title, {paddingLeft: 20}]}>user address</AppText>
-      {/* <FlatList
-        data={address}
-        contentContainerStyle={{height: '80%', alignItems: 'center'}}
-        renderItem={({item}) => (
-          <View style={styles.address}>
-            <AppText>Name: {item.name}</AppText>
-            <AppText>building: {item.phone}</AppText>
-            <AppText>city: {item.city}</AppText>
-            <AppText>area: {item.area}</AppText>
-            <AppText>street: {item.street}</AppText>
-            <AppText>building: {item.building}</AppText>
-          </View>
-        )}
-      /> */}
+
       <AppButton
         title={'add address'}
         style={styles.btn}

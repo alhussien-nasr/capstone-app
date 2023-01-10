@@ -1,4 +1,10 @@
-import {Dimensions, FlatList, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Screen} from '../components/Screen';
 import BagCard from '../components/BagCard';
@@ -6,12 +12,69 @@ import {useDispatch, useSelector} from 'react-redux';
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import {useNavigation} from '@react-navigation/native';
+import {useStripe} from '@stripe/stripe-react-native';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const Bag = () => {
   const {cartItems, cartTotal} = useSelector(state => state.cart);
   const navigation = useNavigation();
-  const [disabled, setDisabled] = useState(false);
+
+  const {presentPaymentSheet, initPaymentSheet} = useStripe();
+
+  const [loading, setLoading] = useState(false);
+
+  const fetchPaymentSheetParams = async () => {
+    const response = await fetch(
+      `https://stripe-server-hb6hrxyf9-alhussien-nasr.vercel.app/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({amount: cartTotal * 100}),
+      },
+    );
+    const {paymentIntent, ephemeralKey, customer} = await response.json();
+
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
+  };
+
+  const initializePaymentSheet = async () => {
+    const {paymentIntent, ephemeralKey, customer, publishableKey} =
+      await fetchPaymentSheetParams();
+
+    const {error} = await initPaymentSheet({
+      merchantDisplayName: 'Example, Inc.',
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+      allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: 'Jane Doe',
+      },
+    });
+    if (!error) {
+      setLoading(true);
+    }
+  };
+
+  const openPaymentSheet = async () => {
+    const {error} = await presentPaymentSheet();
+
+    if (error) {
+      console.log(`Error code: ${error.code}`, error.message);
+    } else {
+      console.log('Success', 'Your order is confirmed!');
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, [cartTotal]);
 
   return (
     <Screen scrollView={false}>
@@ -26,14 +89,16 @@ const Bag = () => {
       />
       <View style={styles.fotter}>
         {cartTotal ? <AppText> total : {cartTotal.toFixed(2)}</AppText> : null}
-        <AppButton
-          style={[styles.btn, !cartTotal && {backgroundColor: 'gray'}]}
-          title={'Process to Check out'}
-          disabled={true}
-          onPress={() => {
-            navigation.navigate('CheckOut', {cartTotal});
-          }}
-        />
+        {!loading ? (
+          <ActivityIndicator />
+        ) : (
+          <AppButton
+            style={[styles.btn, !cartTotal && {backgroundColor: 'gray'}]}
+            title={'Process to Check out'}
+            disabled={cartTotal ? false : true}
+            onPress={openPaymentSheet}
+          />
+        )}
       </View>
     </Screen>
   );

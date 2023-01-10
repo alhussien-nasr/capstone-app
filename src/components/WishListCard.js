@@ -11,35 +11,13 @@ import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AppText from './AppText';
 import {useDispatch, useSelector} from 'react-redux';
-import {apiCall} from '../api';
 
 const width = Dimensions.get('window').width;
 const WishListCard = ({data, increment}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.equipment.userInfo.token);
 
-  const addProduct = item => {
-    apiCall(
-      'cart',
-      'post',
-      {
-        product: item._id,
-        cost: item.price,
-        count: 1,
-      },
-      token,
-    )
-      .then(res => {
-        console.log(res, 'ok');
-        apiCall(`cart`, 'get', undefined, token)
-          .then(res => {
-            console.log(res.data, 'targer');
-            dispatch(setCart(res.data.items));
-          })
-          .catch(err => confirm.log(err, 'from cart'));
-      })
-      .catch(err => console.log(err));
-  };
+
   return (
     <FlatList
       data={data}

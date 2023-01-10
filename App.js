@@ -7,6 +7,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
 import {AppStack} from './src/navigation/AppStack';
+import {StripeProvider} from '@stripe/stripe-react-native';
 
 I18nManager.allowRTL(false);
 
@@ -15,7 +16,9 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
-          <AppStack />
+          <StripeProvider publishableKey="pk_test_51MLRwsK1laAoewbCONkr7O5BKnKN6KEQj0skaAmCI7xcGN0jI8IONf90NmDSseBAsFQXIiGdu6Y0yclUokXIwnXl00VgvowXsq">
+            <AppStack />
+          </StripeProvider>
         </NavigationContainer>
         <Toast />
       </PersistGate>

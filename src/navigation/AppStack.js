@@ -12,9 +12,6 @@ import {I18nManager, StyleSheet, View} from 'react-native';
 import AppText from '../components/AppText';
 import {useDispatch, useSelector} from 'react-redux';
 import LogWithNumper from '../screens/LogWithNumper';
-import CheckOut from '../screens/CheckOut';
-import AccountInformation from '../screens/AccountInformation';
-import Address from '../screens/Address';
 import {TabStack} from './TabStack';
 import LogIn from '../screens/LogIn';
 import Register from '../screens/Register';
@@ -110,14 +107,7 @@ export const AppStack = () => {
       />
       <Stack.Screen component={ItemDetails} name="ItemDetails" />
       <Stack.Screen component={Bag} name="Bag" />
-      <Stack.Screen component={CheckOut} name="CheckOut" />
-      <Stack.Screen
-        component={Address}
-        name="Address"
-        options={{
-          headerRight: () => null,
-        }}
-      />
+
       <Stack.Screen
         component={ItemsScreen}
         name="ItemsScreen"
@@ -125,13 +115,7 @@ export const AppStack = () => {
           headerRight: () => null,
         }}
       />
-      <Stack.Screen
-        component={AccountInformation}
-        name="AccountInformation"
-        options={{
-          headerRight: () => null,
-        }}
-      />
+
     </Stack.Navigator>
   );
 };

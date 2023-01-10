@@ -17,7 +17,6 @@ import {signInWithEmailAndPassword} from 'firebase/auth';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {apiCall} from '../api';
 import SplashScreen from 'react-native-splash-screen';
 
 const width = Dimensions.get('window').width;
